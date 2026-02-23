@@ -431,23 +431,71 @@ export default function App() {
   /* ══════════════════════════════════════════
      COVER SCREEN
      ══════════════════════════════════════════ */
+  const STEPS = [
+    { num: '1', title: 'Take a 2-minute mindset quiz', desc: '10 quick questions to see where your head is really at.' },
+    { num: '2', title: 'Work through 5 mindset shifts', desc: 'Real scenarios, not lectures. Tap through each one at your own pace.' },
+    { num: '3', title: 'Walk away with a new mental framework', desc: "No typing, no journaling. Just tap, flip, and rewire how you think about food and progress." },
+  ]
+
   const renderCover = () => (
-    <div className={wrapClass} style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+    <div className={wrapClass} style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 20px' }}>
       <div style={{ maxWidth: 560, textAlign: 'center' }}>
+        {/* decorative line */}
         <div style={{ width: 60, height: 1, background: GOLD, margin: '0 auto 28px' }} />
-        <p style={{ fontFamily: PF, fontSize: '.85rem', letterSpacing: '4px', textTransform: 'uppercase', color: GOLD, marginBottom: 12 }}>RIVEN</p>
-        <h1 style={{ fontFamily: PF, fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: 16 }}>
+
+        {/* RIVEN logo */}
+        <p style={{ fontFamily: PF, fontSize: '.85rem', letterSpacing: '8px', textTransform: 'uppercase', color: GOLD, marginBottom: 14 }}>R I V E N</p>
+
+        {/* title */}
+        <h1 style={{ fontFamily: PF, fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: 14 }}>
           The Mental Game
         </h1>
+
+        {/* subtitle */}
         <p style={{ fontFamily: PF, fontSize: 'clamp(1rem, 2.5vw, 1.25rem)', fontStyle: 'italic', color: TEXT_DIM, marginBottom: 32 }}>
           5 Mindset Shifts for Lasting Change
         </p>
-        <div style={{ display: 'inline-block', border: `1px solid ${GOLD}`, borderRadius: 999, padding: '8px 28px', marginBottom: 40 }}>
+
+        {/* one-liner explanation */}
+        <p style={{ color: TEXT, fontSize: '1rem', maxWidth: 480, margin: '0 auto 44px', lineHeight: 1.85 }}>
+          A free interactive tool that helps you identify the mental blocks keeping you stuck — and gives you the mindset shifts to break through them.
+        </p>
+
+        {/* How It Works section */}
+        <p style={{ fontFamily: PF, fontSize: '.75rem', letterSpacing: 3, textTransform: 'uppercase', color: GOLD, marginBottom: 20 }}>
+          Here's How It Works
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 40, textAlign: 'left' }}>
+          {STEPS.map((step) => (
+            <div key={step.num} style={{
+              display: 'flex', gap: 16, alignItems: 'flex-start',
+              background: CARD_BG, border: `1px solid ${CARD_BORDER}`, borderRadius: 14,
+              padding: '18px 20px',
+            }}>
+              {/* numbered gold circle */}
+              <div style={{
+                width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+                background: `linear-gradient(135deg, ${GOLD}, #D4B96A)`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                marginTop: 2,
+              }}>
+                <span style={{ fontFamily: PF, fontSize: '.9rem', fontWeight: 700, color: BG }}>{step.num}</span>
+              </div>
+              <div>
+                <p style={{ fontFamily: PF, fontSize: '.95rem', fontWeight: 600, color: TEXT, marginBottom: 4, lineHeight: 1.3 }}>{step.title}</p>
+                <p style={{ fontSize: '.85rem', color: TEXT_DIM, lineHeight: 1.6 }}>{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* value badge */}
+        <div style={{ display: 'inline-block', border: `1px dashed ${GOLD}`, borderRadius: 999, padding: '8px 28px', marginBottom: 36 }}>
           <span style={{ color: GOLD, fontFamily: PF, fontSize: '.9rem', letterSpacing: 1 }}>$97 Value — Yours Free</span>
         </div>
-        <p style={{ color: TEXT_DIM, fontSize: '.95rem', maxWidth: 440, margin: '0 auto 40px', lineHeight: 1.8 }}>
-          A guided mindset experience designed for Black women who are done with diets and ready for real transformation.
-        </p>
+
+        {/* CTA buttons */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center' }}>
           <button onClick={() => go('quiz')} style={btnStyle(GOLD, BG)}>Start the Assessment</button>
           <button
@@ -469,6 +517,7 @@ export default function App() {
             Skip to the 5 Shifts
           </button>
         </div>
+
         <div style={{ width: 60, height: 1, background: GOLD, margin: '40px auto 0', opacity: 0.4 }} />
       </div>
     </div>
