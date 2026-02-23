@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 /* ─── colour palette ─── */
 const GOLD = '#C8A456'
@@ -19,7 +19,7 @@ const SHIFT_COLORS = {
 /* ─── quiz data ─── */
 const QUIZ = [
   {
-    q: 'When you make a mistake on your nutrition plan, you usually\u2026',
+    q: 'When you make a mistake on your nutrition plan, you usually...',
     a: [
       { text: 'Beat yourself up and want to quit', score: 1 },
       { text: 'Feel frustrated but try to move on', score: 2 },
@@ -27,15 +27,15 @@ const QUIZ = [
     ],
   },
   {
-    q: 'How do you feel about the word \u201Cdiet\u201D?',
+    q: 'How do you feel about the word "diet"?',
     a: [
       { text: 'It feels restrictive and triggering', score: 1 },
-      { text: 'Neutral \u2014 it depends on the context', score: 2 },
+      { text: 'Neutral — it depends on the context', score: 2 },
       { text: 'I see nutrition as a lifestyle, not a diet', score: 3 },
     ],
   },
   {
-    q: 'When progress feels slow, you tend to\u2026',
+    q: 'When progress feels slow, you tend to...',
     a: [
       { text: 'Try a completely different plan', score: 1 },
       { text: 'Get discouraged but stick it out', score: 2 },
@@ -43,15 +43,15 @@ const QUIZ = [
     ],
   },
   {
-    q: 'Your relationship with the scale is\u2026',
+    q: 'Your relationship with the scale is...',
     a: [
       { text: 'It controls my mood for the whole day', score: 1 },
       { text: 'I check it but try not to obsess', score: 2 },
-      { text: 'It\u2019s one data point among many', score: 3 },
+      { text: "It's one data point among many", score: 3 },
     ],
   },
   {
-    q: 'When it comes to meal prep, you\u2026',
+    q: 'When it comes to meal prep, you...',
     a: [
       { text: 'Go all-in for a week then fall off', score: 1 },
       { text: 'Do it sometimes when motivated', score: 2 },
@@ -62,20 +62,20 @@ const QUIZ = [
     q: 'How do you handle social events with food?',
     a: [
       { text: 'Avoid them or feel anxious the whole time', score: 1 },
-      { text: 'Try to be \u201Cgood\u201D but usually overdo it', score: 2 },
+      { text: 'Try to be "good" but usually overdo it', score: 2 },
       { text: 'Enjoy myself and get back on track next meal', score: 3 },
     ],
   },
   {
-    q: 'When you think about your health journey, you feel\u2026',
+    q: 'When you think about your health journey, you feel...',
     a: [
-      { text: 'Like I\u2019m always starting over', score: 1 },
+      { text: "Like I'm always starting over", score: 1 },
       { text: 'Hopeful but unsure', score: 2 },
       { text: 'Confident in my ability to figure it out', score: 3 },
     ],
   },
   {
-    q: 'Your inner voice when it comes to food is usually\u2026',
+    q: 'Your inner voice when it comes to food is usually...',
     a: [
       { text: 'Critical and judgmental', score: 1 },
       { text: 'A mix of supportive and harsh', score: 2 },
@@ -91,11 +91,11 @@ const QUIZ = [
     ],
   },
   {
-    q: 'When life gets stressful, your eating habits\u2026',
+    q: 'When life gets stressful, your eating habits...',
     a: [
       { text: 'Go completely off the rails', score: 1 },
       { text: 'Slip a bit but I manage', score: 2 },
-      { text: 'Stay mostly steady \u2014 I have coping tools', score: 3 },
+      { text: 'Stay mostly steady — I have coping tools', score: 3 },
     ],
   },
 ]
@@ -105,37 +105,36 @@ const QUIZ_CATEGORIES = [
   { range: [2, 3], shift: 'Identity Before Habits' },
   { range: [4, 5], shift: 'The 90% Rule' },
   { range: [6, 7], shift: 'Boredom Is the Real Enemy' },
-  { range: [8, 9], shift: "You\u2019re Not Starting Over" },
+  { range: [8, 9], shift: "You're Not Starting Over" },
 ]
 
-/* ─── shift content with interactive exercises ─── */
+/* ─── shift content — every shift has: scenario FIRST, flip cards SECOND ─── */
 const SHIFTS = [
   {
     id: 1,
     title: 'Progress Over Perfection',
     subtitle: 'Shift #1',
-    description: 'The all-or-nothing mindset is the #1 killer of lasting change. You don\u2019t need a perfect week \u2014 you need a consistent pattern of good-enough choices.',
+    description: "The all-or-nothing mindset is the #1 killer of lasting change. You don't need a perfect week — you need a consistent pattern of good-enough choices.",
     exercises: [
       {
         type: 'scenario',
         title: 'What Would You Do?',
-        scenario: 'You ate off-plan at lunch \u2014 pizza and fries with coworkers. It\u2019s now 4pm. What do you do next?',
+        scenario: "You ate a whole pizza on Tuesday night. Wednesday morning you feel terrible. What do you do?",
         options: [
-          { text: 'Skip dinner to make up for it', aligned: false },
-          { text: 'Say \u201Cforget it\u201D and order takeout tonight too', aligned: false },
-          { text: 'Have a nourishing dinner like you planned', aligned: true },
-          { text: 'Start a juice cleanse tomorrow', aligned: false },
+          { text: "Start over next Monday — this week is already ruined", aligned: false },
+          { text: "Skip breakfast to make up for it", aligned: false },
+          { text: "Make your next meal a good one and keep moving", aligned: true },
+          { text: "Google a 3-day detox cleanse", aligned: false },
         ],
-        explanation: 'One off-plan meal doesn\u2019t erase your progress. The RIVEN mindset says: make your very next choice a nourishing one. No punishment, no drama, no starting over Monday.',
+        explanation: "One off-plan meal doesn't erase your progress. The RIVEN mindset says: make your very next choice a nourishing one. No punishment, no drama, no starting over Monday.",
       },
       {
         type: 'flip',
         title: 'Flip Your Story',
         cards: [
-          { old: 'I messed up today so the whole week is ruined.', new_story: 'I had a rough meal. The next one is an opportunity.' },
-          { old: 'If I can\u2019t do it perfectly, why bother?', new_story: 'Done is better than perfect. 80% consistency wins.' },
-          { old: 'I\u2019ll start fresh on Monday.', new_story: 'I\u2019m starting fresh right now, with my next choice.' },
-          { old: 'Everyone else has it figured out except me.', new_story: 'Everyone is figuring it out. I\u2019m not behind \u2014 I\u2019m on my own path.' },
+          { old: "I messed up so the week is ruined.", new_story: "One meal doesn't define my week." },
+          { old: "I need the perfect plan before I start.", new_story: "A good-enough plan I follow beats a perfect plan I don't." },
+          { old: "If I can't do it 100%, why bother?", new_story: "80% consistency beats 0% perfection." },
         ],
       },
     ],
@@ -144,25 +143,27 @@ const SHIFTS = [
     id: 2,
     title: 'Identity Before Habits',
     subtitle: 'Shift #2',
-    description: 'You don\u2019t stick with habits because of willpower. You stick with them because they match who you believe you are. Change the identity first, and the habits follow.',
+    description: "You don't stick with habits because of willpower. You stick with them because they match who you believe you are. Change the identity first, and the habits follow.",
     exercises: [
+      {
+        type: 'scenario',
+        title: 'What Would You Do?',
+        scenario: "Your coworker brings donuts to the office and puts them right next to your desk. What do you do?",
+        options: [
+          { text: "Eat two — you can't resist, you've always been like this", aligned: false },
+          { text: "Eat one and feel guilty the rest of the day", aligned: false },
+          { text: "Say 'no thanks, I'm good' — because that's just who you are now", aligned: true },
+          { text: "Take one and hide it in your drawer for later", aligned: false },
+        ],
+        explanation: "When your identity shifts, decisions become automatic. You're not resisting the donut — you're just being who you are. That's the power of identity-first change.",
+      },
       {
         type: 'flip',
         title: 'Flip Your Story',
         cards: [
-          { old: 'I\u2019m just not a healthy person.', new_story: 'I am someone who nourishes her body, one choice at a time.' },
-          { old: 'Healthy eating isn\u2019t for people like me.', new_story: 'I deserve to feel strong and energized. This is for me.' },
-          { old: 'I always fall off eventually.', new_story: 'Every choice is a vote for the woman I\u2019m becoming.' },
-          { old: 'I don\u2019t have the discipline.', new_story: 'I don\u2019t need discipline \u2014 I need identity alignment.' },
-        ],
-      },
-      {
-        type: 'slider',
-        title: 'Where Are You Now?',
-        sliders: [
-          { left: 'I eat based on emotions', right: 'I eat based on intention' },
-          { left: 'My habits don\u2019t match my goals', right: 'My habits reflect who I\u2019m becoming' },
-          { left: 'I talk to myself harshly', right: 'I speak to myself like someone I love' },
+          { old: "I'll start when I feel motivated.", new_story: "I don't wait for motivation. I just do what I do." },
+          { old: "I've always been the girl who can't say no to food.", new_story: "I'm becoming someone who makes choices on purpose." },
+          { old: "This is just how I am.", new_story: "I'm not stuck. I'm building a new identity." },
         ],
       },
     ],
@@ -171,27 +172,27 @@ const SHIFTS = [
     id: 3,
     title: 'The 90% Rule',
     subtitle: 'Shift #3',
-    description: 'You don\u2019t need to eat perfectly 100% of the time. Nail it 90% of the time and the other 10% won\u2019t matter. Sustainability beats perfection every single time.',
+    description: "You don't need to eat perfectly 100% of the time. Nail it 90% of the time and the other 10% won't matter. Sustainability beats perfection every single time.",
     exercises: [
       {
         type: 'scenario',
         title: 'What Would You Do?',
-        scenario: 'It\u2019s Friday night. Your girls want to go out for dinner and drinks. You\u2019ve been eating well all week. What\u2019s your move?',
+        scenario: "You're invited to a birthday dinner on Saturday. The restaurant has nothing 'healthy' on the menu. What do you do?",
         options: [
-          { text: 'Skip the dinner \u2014 can\u2019t risk it', aligned: false },
-          { text: 'Go but only eat a sad salad and water', aligned: false },
-          { text: 'Go, enjoy yourself, choose a meal you love, and get back on plan tomorrow', aligned: true },
-          { text: 'Go and go all out \u2014 you\u201Dearned\u201D it', aligned: false },
+          { text: "Skip the dinner to protect your streak", aligned: false },
+          { text: "Go but don't eat anything", aligned: false },
+          { text: "Go, enjoy yourself, choose a meal you love, and get back on plan tomorrow", aligned: true },
+          { text: "Go but complain about the menu the whole time", aligned: false },
         ],
-        explanation: 'The 90% Rule means you can fully enjoy that 10% without guilt. Going out with your girls IS part of a healthy life. The key is it\u2019s intentional, not reactive.',
+        explanation: "The 90% Rule means you can fully enjoy that 10% without guilt. Going out with your girls IS part of a healthy life. The key is it's intentional, not reactive.",
       },
       {
-        type: 'slider',
-        title: 'Find Your Balance',
-        sliders: [
-          { left: 'I need 100% perfection', right: 'I embrace the 90% rule' },
-          { left: 'Treats = failure', right: 'Treats = part of my plan' },
-          { left: 'One bad meal ruins everything', right: 'One meal is just one meal' },
+        type: 'flip',
+        title: 'Flip Your Story',
+        cards: [
+          { old: "One bad meal ruins everything.", new_story: "One meal out of 21 this week is less than 5%." },
+          { old: "I need to be strict 7 days a week.", new_story: "I need to be solid 6 days. The 7th has grace built in." },
+          { old: "If I'm not 100%, I'm failing.", new_story: "90% consistency is what actually gets results." },
         ],
       },
     ],
@@ -200,55 +201,56 @@ const SHIFTS = [
     id: 4,
     title: 'Boredom Is the Real Enemy',
     subtitle: 'Shift #4',
-    description: 'Most people don\u2019t fail because the plan is too hard. They fail because it gets boring. The secret to lasting change? Learn to find satisfaction in consistency.',
+    description: "Most people don't fail because the plan is too hard. They fail because it gets boring. The secret to lasting change? Learn to find satisfaction in consistency.",
     exercises: [
       {
         type: 'scenario',
         title: 'What Would You Do?',
-        scenario: 'You\u2019ve been meal prepping the same 4 meals for 3 weeks. It\u2019s working \u2014 you feel great, your clothes fit better \u2014 but you\u2019re bored. A new trendy diet pops up on your feed. What do you do?',
+        scenario: "You've been eating the same 4 meals for 2 weeks. You're bored and thinking about quitting. What do you do?",
         options: [
-          { text: 'Switch to the new diet immediately \u2014 need something fresh', aligned: false },
-          { text: 'Add one new recipe to your rotation and keep going', aligned: true },
-          { text: 'Quit meal prepping entirely', aligned: false },
-          { text: 'Do a 3-day \u201Creset\u201D cleanse you saw online', aligned: false },
+          { text: "Scrap everything and try a whole new diet", aligned: false },
+          { text: "Order takeout — you deserve a break from all this", aligned: false },
+          { text: "Keep your framework but try a new recipe or seasoning this week", aligned: true },
+          { text: "Push through the boredom by eating even more strictly", aligned: false },
         ],
-        explanation: 'Boring means it\u2019s working. The RIVEN mindset says: add variety within your framework, don\u2019t blow up what\u2019s working because your brain wants novelty. Small tweaks, not total overhauls.',
+        explanation: "Boring means it's working. The RIVEN mindset says: add variety within your framework, don't blow up what's working because your brain wants novelty. Small tweaks, not total overhauls.",
       },
       {
         type: 'flip',
         title: 'Flip Your Story',
         cards: [
-          { old: 'This is boring. I need a new plan.', new_story: 'Boring means it\u2019s working. The magic is in the repetition.' },
-          { old: 'I need excitement to stay motivated.', new_story: 'I don\u2019t need motivation \u2014 I need commitment to the mundane.' },
-          { old: 'If it\u2019s not fun, it\u2019s not sustainable.', new_story: 'Sustainable doesn\u2019t mean exciting. It means doable, day after day.' },
-          { old: 'There must be a better, faster way.', new_story: 'The best plan is the one I actually stick with.' },
+          { old: "I need a new diet every month.", new_story: "I keep the framework and change the flavors." },
+          { old: "Healthy food is boring.", new_story: "I just haven't found my rotation yet." },
+          { old: "I quit because it stopped being exciting.", new_story: "I don't need excitement. I need anchor meals I can count on." },
         ],
       },
     ],
   },
   {
     id: 5,
-    title: "You\u2019re Not Starting Over",
+    title: "You're Not Starting Over",
     subtitle: 'Shift #5',
-    description: 'Every time you come back to your health journey, you bring everything you\u2019ve learned. You\u2019re not at square one \u2014 you\u2019re at square two, five, or twenty. You carry your lessons forward.',
+    description: "Every time you come back to your health journey, you bring everything you've learned. You're not at square one — you're at square two, five, or twenty. You carry your lessons forward.",
     exercises: [
+      {
+        type: 'scenario',
+        title: 'What Would You Do?',
+        scenario: "You fell off your plan for 3 weeks straight. You feel like you're back at square one. What do you do?",
+        options: [
+          { text: "Give up — clearly this doesn't work for you", aligned: false },
+          { text: "Start a completely different program from scratch", aligned: false },
+          { text: "Pick up exactly where you left off — you already know what works", aligned: true },
+          { text: "Wait until New Year's to try again", aligned: false },
+        ],
+        explanation: "You're not starting over. You're starting from experience. Every single attempt taught you something — what works, what doesn't, and who you are. That knowledge is yours forever.",
+      },
       {
         type: 'flip',
         title: 'Flip Your Story',
         cards: [
-          { old: 'Here I go again, starting from scratch.', new_story: 'I\u2019m not starting over. I\u2019m starting from experience.' },
-          { old: 'I always end up back here.', new_story: 'I always come back. That\u2019s resilience, not failure.' },
-          { old: 'This time will probably be the same.', new_story: 'This time I know things I didn\u2019t know before.' },
-          { old: 'I\u2019ve wasted so much time.', new_story: 'Every attempt taught me something I\u2019ll use now.' },
-        ],
-      },
-      {
-        type: 'slider',
-        title: 'Check In With Yourself',
-        sliders: [
-          { left: 'I feel like I\u2019m starting from zero', right: 'I carry forward everything I\u2019ve learned' },
-          { left: 'Past attempts were failures', right: 'Past attempts were lessons' },
-          { left: 'I doubt I can change', right: 'I know I\u2019m capable of growth' },
+          { old: "I've tried everything and nothing works.", new_story: "I now know exactly what doesn't work. I'm closer than ever." },
+          { old: "I'm starting over... again.", new_story: "I'm not starting over. I'm starting from experience." },
+          { old: "I always end up back here.", new_story: "Every comeback taught me something the last one didn't." },
         ],
       },
     ],
@@ -274,7 +276,6 @@ const css = `
   @keyframes gaugeGrow { from { stroke-dasharray: 0 999; } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes popIn { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
   @keyframes pulseGlow {
     0%, 100% { box-shadow: 0 0 0 0 rgba(200,164,86,0); }
     50% { box-shadow: 0 0 20px 4px rgba(200,164,86,0.25); }
@@ -314,34 +315,6 @@ const css = `
     transform: rotateY(180deg);
   }
 
-  /* ── custom slider ── */
-  .gold-slider {
-    -webkit-appearance: none; appearance: none;
-    width: 100%; height: 6px;
-    background: #1E1E1E; border-radius: 999px; outline: none;
-    cursor: pointer;
-  }
-  .gold-slider::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 28px; height: 28px;
-    background: ${GOLD}; border-radius: 50%;
-    border: 3px solid ${BG};
-    box-shadow: 0 0 10px rgba(200,164,86,0.4);
-    cursor: pointer;
-    transition: transform 0.15s ease;
-  }
-  .gold-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
-  .gold-slider::-moz-range-thumb {
-    width: 28px; height: 28px;
-    background: ${GOLD}; border-radius: 50%;
-    border: 3px solid ${BG};
-    box-shadow: 0 0 10px rgba(200,164,86,0.4);
-    cursor: pointer;
-  }
-  .gold-slider::-moz-range-track {
-    height: 6px; background: #1E1E1E; border-radius: 999px; border: none;
-  }
-
   /* ── quiz answer pop ── */
   @keyframes answerPop {
     0% { transform: scale(1); }
@@ -375,8 +348,6 @@ export default function App() {
   const [scenarioRevealed, setScenarioRevealed] = useState(false)
   const [flippedCards, setFlippedCards] = useState({})
   const [flipCommitted, setFlipCommitted] = useState(false)
-  const [sliderValues, setSliderValues] = useState({})
-  const [sliderSubmitted, setSliderSubmitted] = useState(false)
   const [exerciseStep, setExerciseStep] = useState(0)
 
   /* fade transition helper */
@@ -407,8 +378,6 @@ export default function App() {
     setScenarioRevealed(false)
     setFlippedCards({})
     setFlipCommitted(false)
-    setSliderValues({})
-    setSliderSubmitted(false)
   }
 
   const advanceExercise = () => {
@@ -474,14 +443,31 @@ export default function App() {
           5 Mindset Shifts for Lasting Change
         </p>
         <div style={{ display: 'inline-block', border: `1px solid ${GOLD}`, borderRadius: 999, padding: '8px 28px', marginBottom: 40 }}>
-          <span style={{ color: GOLD, fontFamily: PF, fontSize: '.9rem', letterSpacing: 1 }}>$97 Value \u2014 Yours Free</span>
+          <span style={{ color: GOLD, fontFamily: PF, fontSize: '.9rem', letterSpacing: 1 }}>$97 Value — Yours Free</span>
         </div>
         <p style={{ color: TEXT_DIM, fontSize: '.95rem', maxWidth: 440, margin: '0 auto 40px', lineHeight: 1.8 }}>
           A guided mindset experience designed for Black women who are done with diets and ready for real transformation.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center' }}>
           <button onClick={() => go('quiz')} style={btnStyle(GOLD, BG)}>Start the Assessment</button>
-          <button onClick={() => go('hub')} style={btnStyle('transparent', GOLD, true)}>Skip to the 5 Shifts</button>
+          <button
+            onClick={() => go('hub')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: GOLD,
+              fontFamily: PF,
+              fontSize: '.85rem',
+              cursor: 'pointer',
+              padding: '10px 20px',
+              letterSpacing: 1,
+              textDecoration: 'underline',
+              textUnderlineOffset: '4px',
+              minHeight: 44,
+            }}
+          >
+            Skip to the 5 Shifts
+          </button>
         </div>
         <div style={{ width: 60, height: 1, background: GOLD, margin: '40px auto 0', opacity: 0.4 }} />
       </div>
@@ -498,7 +484,7 @@ export default function App() {
       <div className={wrapClass} style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '48px 20px' }}>
         <div style={{ maxWidth: 560, width: '100%' }}>
           <p style={{ fontFamily: PF, fontSize: '.8rem', letterSpacing: 3, textTransform: 'uppercase', color: GOLD, marginBottom: 24 }}>
-            RIVEN \u2014 Mindset Assessment
+            RIVEN — Mindset Assessment
           </p>
           {/* progress bar */}
           <div style={{ background: '#1E1E1E', borderRadius: 999, height: 8, marginBottom: 8, overflow: 'hidden' }}>
@@ -582,7 +568,7 @@ export default function App() {
             {quizScore >= 25
               ? 'Your mindset is strong! The shifts ahead will sharpen your edge even more.'
               : quizScore >= 17
-              ? 'You have a solid foundation \u2014 these shifts will take you to the next level.'
+              ? 'You have a solid foundation — these shifts will take you to the next level.'
               : 'This is your starting line, Queen. The 5 shifts below were made for exactly where you are.'}
           </p>
           {weakAreas.length > 0 && (
@@ -610,7 +596,7 @@ export default function App() {
       <div className={wrapClass} style={{ minHeight: '100dvh', padding: '48px 20px', maxWidth: 620, margin: '0 auto' }}>
         <p style={{ fontFamily: PF, fontSize: '.8rem', letterSpacing: 3, textTransform: 'uppercase', color: GOLD, marginBottom: 12 }}>RIVEN</p>
         <h2 style={{ fontFamily: PF, fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 700, marginBottom: 8 }}>The 5 Mindset Shifts</h2>
-        <p style={{ color: TEXT_DIM, fontSize: '.9rem', marginBottom: 28 }}>Tap each shift to explore interactive exercises. No typing \u2014 just tap, flip, and reflect.</p>
+        <p style={{ color: TEXT_DIM, fontSize: '.9rem', marginBottom: 28 }}>Tap each shift to explore interactive exercises. No typing — just tap, flip, and reflect.</p>
 
         <div style={{ marginBottom: 36 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
@@ -629,7 +615,7 @@ export default function App() {
         {allDone && (
           <div style={{ background: 'linear-gradient(135deg, #1A1608, #14120A)', border: `1px solid ${GOLD}`, borderRadius: 14, padding: '24px 28px', marginBottom: 32, textAlign: 'center', animation: 'fadeUp .6s ease both' }}>
             <p style={{ fontFamily: PF, fontSize: '1.2rem', fontWeight: 700, color: GOLD, marginBottom: 6 }}>Congratulations, Queen!</p>
-            <p style={{ color: TEXT_DIM, fontSize: '.9rem' }}>You\u2019ve completed all 5 mindset shifts. Revisit anytime to deepen your growth.</p>
+            <p style={{ color: TEXT_DIM, fontSize: '.9rem' }}>You've completed all 5 mindset shifts. Revisit anytime to deepen your growth.</p>
           </div>
         )}
 
@@ -705,13 +691,21 @@ export default function App() {
                   transition: 'all .3s ease', minHeight: 56, lineHeight: 1.5,
                   boxShadow: shadow,
                   transform: picked && !revealed ? 'scale(1.02)' : 'scale(1)',
-                  position: 'relative',
                 }}
               >
                 {opt.text}
                 {revealed && isAligned && (
-                  <span style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', color: '#7A8B6F', fontFamily: PF, fontSize: '.75rem', fontWeight: 600, letterSpacing: 1 }}>
-                    RIVEN {'\u2713'}
+                  <span style={{
+                    display: 'inline-block',
+                    marginLeft: 10,
+                    color: '#7A8B6F',
+                    fontFamily: PF,
+                    fontSize: '.75rem',
+                    fontWeight: 600,
+                    letterSpacing: 1,
+                    verticalAlign: 'middle',
+                  }}>
+                    — RIVEN ✓
                   </span>
                 )}
               </button>
@@ -785,7 +779,7 @@ export default function App() {
                 animation: 'pulseGlow 2s ease infinite',
               }}
             >
-              I\u2019m Choosing the New Story
+              I'm Choosing the New Story
             </button>
           </div>
         )}
@@ -797,93 +791,9 @@ export default function App() {
               <span style={{ fontFamily: PF, fontSize: '1rem', fontWeight: 600, color: GOLD }}>Committed</span>
             </div>
             <div>
-              <button onClick={advanceExercise} style={btnStyle(col, BG)}>Continue</button>
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  /* ══════════════════════════════════════════
-     EXERCISE: SLIDER SELF-ASSESSMENT
-     ══════════════════════════════════════════ */
-  const renderSliders = (ex, col) => {
-    const allMoved = ex.sliders.every((_, i) => sliderValues[i] !== undefined)
-    return (
-      <div style={{ animation: 'fadeUp .5s ease both' }}>
-        <p style={{ fontFamily: PF, fontSize: '1.1rem', fontWeight: 600, color: col, marginBottom: 8 }}>{ex.title}</p>
-        <p style={{ color: TEXT_DIM, fontSize: '.85rem', marginBottom: 28 }}>Drag each slider to where you honestly are right now.</p>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32, marginBottom: 32 }}>
-          {ex.sliders.map((sl, i) => {
-            const val = sliderValues[i] ?? 50
-            const fillPct = val
-            return (
-              <div key={i}>
-                <div style={{ position: 'relative', marginBottom: 12 }}>
-                  {/* filled track */}
-                  <div style={{
-                    position: 'absolute', top: '50%', left: 0, height: 6, borderRadius: 999,
-                    width: `${fillPct}%`, background: `linear-gradient(90deg, #C4622D, ${col})`,
-                    transform: 'translateY(-50%)', pointerEvents: 'none', transition: 'width .1s',
-                  }} />
-                  <input
-                    type="range" min="0" max="100"
-                    value={val}
-                    onChange={(e) => setSliderValues({ ...sliderValues, [i]: Number(e.target.value) })}
-                    className="gold-slider"
-                    style={{ position: 'relative', zIndex: 2, background: '#1E1E1E' }}
-                  />
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
-                  <span style={{ fontSize: '.78rem', color: val < 40 ? TEXT : TEXT_DIM, flex: 1, transition: 'color .3s' }}>{sl.left}</span>
-                  <span style={{ fontSize: '.78rem', color: val > 60 ? TEXT : TEXT_DIM, flex: 1, textAlign: 'right', transition: 'color .3s' }}>{sl.right}</span>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-
-        {!sliderSubmitted && (
-          <div style={{ textAlign: 'center' }}>
-            <button onClick={() => { if (allMoved) setSliderSubmitted(true) }}
-              style={{
-                ...btnStyle(allMoved ? col : '#333', allMoved ? BG : '#666'),
-                cursor: allMoved ? 'pointer' : 'default',
-                opacity: allMoved ? 1 : 0.5,
-              }}
-            >See My Snapshot</button>
-          </div>
-        )}
-
-        {sliderSubmitted && (
-          <div style={{ animation: 'fadeUp .4s ease both' }}>
-            <div style={{ background: CARD_BG, border: `1px solid ${CARD_BORDER}`, borderRadius: 14, padding: '24px', marginBottom: 24 }}>
-              <p style={{ fontFamily: PF, fontSize: '.8rem', letterSpacing: 2, textTransform: 'uppercase', color: col, marginBottom: 16 }}>Your Snapshot</p>
-              {ex.sliders.map((sl, i) => {
-                const val = sliderValues[i] ?? 50
-                return (
-                  <div key={i} style={{ marginBottom: 16 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                      <span style={{ fontSize: '.72rem', color: TEXT_DIM, maxWidth: '45%' }}>{sl.left}</span>
-                      <span style={{ fontSize: '.72rem', color: TEXT_DIM, maxWidth: '45%', textAlign: 'right' }}>{sl.right}</span>
-                    </div>
-                    <div style={{ background: '#1E1E1E', borderRadius: 999, height: 8, position: 'relative', overflow: 'hidden' }}>
-                      <div style={{
-                        width: `${val}%`, height: '100%', borderRadius: 999,
-                        background: `linear-gradient(90deg, #C4622D, ${col})`,
-                      }} />
-                    </div>
-                  </div>
-                )
-              })}
-              <p style={{ color: TEXT_DIM, fontSize: '.85rem', marginTop: 16, lineHeight: 1.6, fontStyle: 'italic' }}>
-                This is where you are right now \u2014 not where you\u2019ll stay. Every shift moves you forward.
-              </p>
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <button onClick={advanceExercise} style={btnStyle(col, BG)}>Continue</button>
+              <button onClick={advanceExercise} style={btnStyle(col, BG)}>
+                {exerciseStep === SHIFTS[currentShift].exercises.length - 1 ? 'Complete & Next' : 'Continue'}
+              </button>
             </div>
           </div>
         )}
@@ -898,7 +808,6 @@ export default function App() {
     const s = SHIFTS[currentShift]
     const col = SHIFT_COLORS[s.id]
     const ex = s.exercises[exerciseStep]
-    const isLastExercise = exerciseStep === s.exercises.length - 1
 
     return (
       <div className={wrapClass} style={{ minHeight: '100dvh', padding: '48px 20px 80px', maxWidth: 620, margin: '0 auto' }}>
@@ -926,7 +835,6 @@ export default function App() {
         {/* render current exercise */}
         {ex.type === 'scenario' && renderScenario(ex, col)}
         {ex.type === 'flip' && renderFlipCards(ex, col)}
-        {ex.type === 'slider' && renderSliders(ex, col)}
       </div>
     )
   }
